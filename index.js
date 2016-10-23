@@ -52,9 +52,11 @@ const attacher = (origin, options) => {
       words.forEach((word, index) => {
         let classes = ['word']
 
-        watchWords.conj.indexOf(word) !== -1 ? classes.push('cc') : null
-        watchWords.articles.indexOf(word) !== -1 ? classes.push('a') : null
-        watchWords.preps.indexOf(word) !== -1 ? classes.push('p') : null
+        let wordLow = word.toLowerCase()
+
+        watchWords.conj.indexOf(wordLow) !== -1 ? classes.push('cc') : null
+        watchWords.articles.indexOf(wordLow) !== -1 ? classes.push('a') : null
+        watchWords.preps.indexOf(wordLow) !== -1 ? classes.push('p') : null
 
         node.children.push({
           type: 'element',
