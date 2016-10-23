@@ -1,11 +1,3 @@
-/**
- * @author Titus Wormer
- * @copyright 2016 Titus Wormer
- * @license MIT
- * @module rehype-wordwrap
- * @fileoverview Test suite for `rehype-wordwrap`.
- */
-
 'use strict'
 
 /* eslint-env mocha */

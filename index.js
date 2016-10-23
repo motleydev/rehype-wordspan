@@ -9,8 +9,6 @@
 
 /* Special thanks to Titus Wormer @wooorm for the boilerplate code */
 
-/* eslint-env commonjs */
-
 /* Dependencies */
 import visit from 'unist-util-visit'
 
