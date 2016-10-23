@@ -21,7 +21,7 @@ Dependencies:
 
 ```javascript
 var rehype = require('rehype');
-var wordSpan = require('rehype-rehype-wordspan');
+var wordSpan = require('rehype-wordspan');
 ```
 
 Given:
