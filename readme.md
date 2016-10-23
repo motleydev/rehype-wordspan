@@ -1,4 +1,4 @@
-# rehype-highlight [![Build Status][travis-badge]][travis] [![Coverage Status][codecov-badge]][codecov]
+# rehype-wordpsan [![Build Status][travis-badge]][travis] [![Coverage Status][codecov-badge]][codecov]
 
 <!--lint disable heading-increment list-item-spacing-->
 

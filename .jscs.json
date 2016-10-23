@@ -1,9 +1,7 @@
 {
   "excludeFiles": [
     "coverage/",
-    "node_modules/",
-    "rehype-highlight.js",
-    "rehype-highlight.min.js"
+    "node_modules/"
   ],
   "preset": "crockford",
   "requireMultipleVarDecl": false,

@@ -1,14 +1,9 @@
 // Dependencies:
-var rehype = require('rehype');
-var highlight = require('./index.js');
+import rehype from 'rehype'
+import wordspan from './index.js'
 
 // Transform:
-var file = rehype().use(highlight).process([
-    '<h1>Hello World!</h1>',
-    '',
-    '<pre><code class="language-js">var name = "World";',
-    'console.warn("Hello, " + name + "!")</code></pre>'
-].join('\n'));
+let file = rehype().use(wordspan).process('<h1>Hello to the World!</h1>')
 
 // Yields:
-console.log('html', file.toString());
+console.log('html', file.toString())

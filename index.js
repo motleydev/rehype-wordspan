@@ -1,80 +1,18 @@
 /**
- * @author Titus Wormer
- * @copyright 2015 Titus Wormer
+ * @author Jesse David Martin
+ * @copyright 2016 Jesse Martin
  * @license MIT
- * @module rehype:highlight
- * @fileoverview Highlight code blocks.
+ * @module rehype:wordspan
+ * @fileoverview Wrap all words of a watched type with a span class - currently just htags.
+ * Classes are added to conjunctions and articles.
  */
 
-'use strict';
+/* Special thanks to Titus Wormer @wooorm for the boilerplate code */
 
 /* eslint-env commonjs */
 
 /* Dependencies */
-var visit = require('unist-util-visit');
-var lowlight = require('lowlight');
-
-/**
- * Get the programming language of `node`.
- *
- * @param {Element} node - Node to check.
- * @return {boolean|string?} - Programming language of
- *   `node`.  `false` if the node shouldn’t be highlighted.
- */
-function language(node) {
-    var className = node.properties.className || [];
-    var length = className.length;
-    var index = -1;
-    var value;
-
-    while (++index < length) {
-        value = className[index];
-
-        if (value === 'no-highlight' || value === 'nohighlight') {
-            return false;
-        }
-
-        if (value.slice(0, 5) === 'lang-') {
-            return value.slice(5);
-        }
-
-        if (value.slice(0, 9) === 'language-') {
-            return value.slice(9);
-        }
-    }
-
-    return null;
-}
-
-/**
- * Get the text content of `node`.
- *
- * @param {Node} node - Node to stringify.
- * @return {string} - Content.
- */
-function text(node) {
-    var children = node.children;
-    var length = children.length;
-    var result = [];
-    var index = -1;
-    var child;
-    var value;
-
-    while (++index < length) {
-        child = children[index];
-        value = ''
-
-        if (child.children) {
-            value = text(child);
-        } else if (child.type === 'text') {
-            value = child.value;
-        }
-
-        result[index] = value;
-    }
-
-    return result.join('');
-}
+import visit from 'unist-util-visit'
 
 /**
  * Attacher.
@@ -83,60 +21,71 @@ function text(node) {
  * @param {Object} [options={}] - Configuration.
  * @return {Function} - Transformer.
  */
-function attacher(origin, options) {
-    var settings = options || {};
-    var detect = settings.subset !== false;
-    var prefix = settings.prefix;
-    var name = 'hljs';
-    var pos;
 
-    if (prefix) {
-        pos = prefix.indexOf('-');
-        name = pos === -1 ? prefix : prefix.slice(0, pos);
-    }
+const attacher = (origin, options) => {
+  const watchWordTypes = {
+    htags: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
+    blockquote: ['blockquote']
+  }
 
-    return function (tree) {
-        visit(tree, 'element', function (node, index, parent) {
-            var props = node.properties;
-            var result;
-            var lang;
+  const watchWords = {
+    conj: ['for', 'and', 'nor', 'but', 'or', 'yet', 'so'],
+    articles: ['an', 'a', 'the', 'or', 'some']
+  }
 
-            if (
-                !parent ||
-                parent.tagName !== 'pre' ||
-                node.tagName !== 'code'
-            ) {
-                return;
+  return function (tree) {
+    visit(tree, 'element', (node, index, parent) => {
+      if (watchWordTypes['htags'].indexOf(node.tagName) === -1) {
+        return
+      }
+
+      let target = node.children[0]
+      let {value} = target
+
+      node.children = []
+      delete target.value
+
+      let words = value.split(' ')
+
+      words.forEach((word, index) => {
+        let classes = ['word']
+
+        watchWords.conj.indexOf(word) !== -1 ? classes.push('conjunction') : null
+        watchWords.articles.indexOf(word) !== -1 ? classes.push('article') : null
+
+        node.children.push({
+          type: 'element',
+          tagName: 'span',
+          'properties': {
+            className: classes
+          },
+          children: [
+            {
+              type: 'text',
+              value: word
             }
+          ]
+        })
 
-            lang = language(node);
-
-            if (lang === false || (!lang && !detect)) {
-                return;
-            }
-
-            if (!props.className) {
-                props.className = [];
-            }
-
-            if (props.className.indexOf(name) === -1) {
-                props.className.unshift(name);
-            }
-
-            if (lang) {
-                result = lowlight.highlight(lang, text(node), options);
-            } else {
-                result = lowlight.highlightAuto(text(node), options);
-
-                if (result.language) {
-                    props.className.push('language-' + result.language);
-                }
-            }
-
-            node.children = result.value;
-        });
-    };
+        if (index < words.length - 1) {
+          node.children.push({
+            type: 'element',
+            tagName: 'span',
+            'properties': {
+              className: ['space']
+            },
+            children: [
+              {
+                type: 'text',
+                value: ' '
+              }
+            ]
+          })
+        }
+      })
+    })
+  }
 }
 
 /* Expose. */
-module.exports = attacher;
+module.exports = attacher
