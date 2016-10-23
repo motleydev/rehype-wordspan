@@ -8,6 +8,7 @@
     "syntax",
     "span"
   ],
+  "main": "dist/index.js",
   "files": [
     "dist"
   ],
