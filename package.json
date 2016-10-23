@@ -1,7 +1,7 @@
 {
   "name": "rehype-wordspan",
   "version": "0.0.0-semantic-release",
-  "description": "Highlight code blocks",
+  "description": "Wraps words in htag elements with span tags and does basic parts of speech parsing.",
   "license": "MIT",
   "keywords": [
     "rehype",
