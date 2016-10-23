@@ -1,5 +1,6 @@
 {
   "name": "rehype-wordspan",
+  "version": "0.0.0-symantic-control",
   "description": "Wraps words in htag elements with span tags and does basic parts of speech parsing.",
   "license": "MIT",
   "keywords": [
