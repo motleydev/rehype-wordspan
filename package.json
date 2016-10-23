@@ -1,6 +1,6 @@
 {
-  "name": "rehype-wordpsan",
-  "version": "1.0.0",
+  "name": "rehype-wordspan",
+  "version": "0.0.0-semantic-release",
   "description": "Highlight code blocks",
   "license": "MIT",
   "keywords": [
@@ -74,7 +74,8 @@
     "ignore": [
       "coverage/**",
       "dist/**",
-      "node_modules/**"
+      "node_modules/**",
+      "example.js"
     ]
   },
   "config": {

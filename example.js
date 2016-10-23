@@ -1,9 +1,11 @@
+'use strict'
+
 // Dependencies:
-import rehype from 'rehype'
-import wordspan from './index.js'
+var rehype = require('rehype');
+var wordspan = require('./dist');
 
 // Transform:
-let file = rehype().use(wordspan).process('<h1>Hello to the World!</h1>')
+var file = rehype().use(wordspan).process('<h1>In the Heart of the Jungle</h1>')
 
 // Yields:
 console.log('html', file.toString())

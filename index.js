@@ -4,7 +4,7 @@
  * @license MIT
  * @module rehype:wordspan
  * @fileoverview Wrap all words of a watched type with a span class - currently just htags.
- * Classes are added to conjunctions and articles.
+ * Classes are added to conjunctions, articles and prepositions.
  */
 
 /* Special thanks to Titus Wormer @wooorm for the boilerplate code */
@@ -30,7 +30,11 @@ const attacher = (origin, options) => {
 
   const watchWords = {
     conj: ['for', 'and', 'nor', 'but', 'or', 'yet', 'so'],
-    articles: ['an', 'a', 'the', 'or', 'some']
+    articles: ['an', 'a', 'the', 'or', 'some'],
+    preps: ['of', 'in', 'to', 'for', 'with', 'on', 'at',
+    'from', 'by', 'about', 'as', 'into', 'like', 'through',
+    'after', 'over', 'between', 'out', 'against', 'during',
+    'without', 'before', 'under', 'around', 'among']
   }
 
   return function (tree) {
@@ -50,8 +54,9 @@ const attacher = (origin, options) => {
       words.forEach((word, index) => {
         let classes = ['word']
 
-        watchWords.conj.indexOf(word) !== -1 ? classes.push('conjunction') : null
-        watchWords.articles.indexOf(word) !== -1 ? classes.push('article') : null
+        watchWords.conj.indexOf(word) !== -1 ? classes.push('cc') : null
+        watchWords.articles.indexOf(word) !== -1 ? classes.push('a') : null
+        watchWords.preps.indexOf(word) !== -1 ? classes.push('p') : null
 
         node.children.push({
           type: 'element',

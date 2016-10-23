@@ -1,15 +1,18 @@
-# rehype-wordpsan [![Build Status][travis-badge]][travis] [![Coverage Status][codecov-badge]][codecov]
+# Rehype-Wordspan
+
+[![Build Status][travis-badge]][travis] [![Coverage Status][codecov-badge]][codecov] [![Js Standard Style][js-standard-style-badge]][js-standard-style] 
+[![Commitizen friendly][commitizen-friendly-badge]][commitizen-friendly]
 
 <!--lint disable heading-increment list-item-spacing-->
 
-Syntax highlighting for [**rehype**][rehype].
+Span wrapping all words of a header element with rudimentary parts of speech classification.
 
 ## Installation
 
 [npm][npm-install]:
 
 ```bash
-npm install rehype-highlight
+npm install rehype-wordspan
 ```
 
 ## Usage
@@ -18,70 +21,59 @@ Dependencies:
 
 ```javascript
 var rehype = require('rehype');
-var highlight = require('rehype-highlight');
+var wordSpan = require('rehype-rehype-wordspan');
 ```
 
-Transform:
+Given:
 
 ```javascript
-var file = rehype().use(highlight).process([
-    '<h1>Hello World!</h1>',
-    '',
-    '<pre><code class="language-js">var name = "World";',
-    'console.warn("Hello, " + name + "!")</code></pre>'
-].join('\n'));
+var file = rehype().use(wordSpan).process('<h1>In the Heart of the Jungle</h1>');
 ```
 
-Yields:
+Returns:
 
 ```html
-<h1>Hello World!</h1>
-
-<pre><code class="hljs language-js"><span class="hljs-keyword">var</span> name = <span class="hljs-string">&#x22;World&#x22;</span>;
-<span class="hljs-built_in">console</span>.warn(<span class="hljs-string">&#x22;Hello, &#x22;</span> + name + <span class="hljs-string">&#x22;!&#x22;</span>)</code></pre>
+<h1><span class="word">In</span><span class="space"> </span><span class="word a">the</span><span class="space"> </span><span class="word">Heart</span><span class="space"> </span><span class="word p">of</span><span class="space"> </span><span class="word a">the</span><span class="space"> </span><span class="word">Jungle</span></h1>
 ```
 
 ## API
 
-### `rehype.use(highlight[, options])`
+### `rehype.use(wordSpan[, options])`
 
-Syntax highlight `pre > code`.  Uses [**lowlight**][lowlight] under
-the hood, which is a virtual version of [`highlight.js`][highlight-js].
+At the moment there are no accepted options, but soon I will add the ability to specify which kind of html tag to catch and which classes to be applied.
 
-Configure the language by using a `lang-js` or `language-js` class.
-Ignore `code` with a `no-highlight` or `nohighlight` class.
-Will auto-detect the syntax language otherwise.
+All words receive a `word` class and all spaces receive a `space` class.
 
-###### `options`
+For now, `cc` is added to conjunctions. `a` is added to aticles. `p` is added to the 20 most common preopositions (the ones you are likely not using for artistic effect.) For example, `Running to the car` will wrap "to" as a preposition. But, `Underneath the old Pickup` will not wrap "Underneath."
 
-*   `prefix` (`string`, default: 'hljs-')
-    — Prefix to use before classes;
-*   `subset` (`boolean` or `Array.<string>`, default: all languages)
-    — Scope of languages to check when auto-detecting.
-    Pass `false` to not highlight code without language classes.
+Don't agree? That's what the issues are for. :)
 
 ## License
 
-[MIT][license] © [Titus Wormer][author]
+[MIT][license] © [Jesse Martin][author]
 
 <!-- Definitions -->
 
-[travis-badge]: https://img.shields.io/travis/wooorm/rehype-highlight.svg
+[travis-badge]: https://img.shields.io/travis/motleydev/rehype-wordspan.svg
 
-[travis]: https://travis-ci.org/wooorm/rehype-highlight
+[travis]: https://travis-ci.org/motleydev/rehype-wordspan
 
-[codecov-badge]: https://img.shields.io/codecov/c/github/wooorm/rehype-highlight.svg
+[codecov-badge]: https://img.shields.io/codecov/c/github/motleydev/rehype-wordspan.svg
 
-[codecov]: https://codecov.io/github/wooorm/rehype-highlight
+[codecov]: https://codecov.io/github/motleydev/rehype-wordspan
+
+[codecov]: https://img.shields.io/badge/code%20style-standard-brightgreen.svg
+
+[js-standard-style-badge]: https://img.shields.io/badge/code%20style-standard-brightgreen.svg
+[js-standard-style]: http://standardjs.com/index.html
+
+[commitizen-friendly-badge]: https://img.shields.io/badge/commitizen-friendly-brightgreen.svg
+[commitizen-friendly]: https://github.com/commitizen
 
 [npm-install]: https://docs.npmjs.com/cli/install
 
 [license]: LICENSE
 
-[author]: http://wooorm.com
+[author]: http://motleydev.com
 
 [rehype]: https://github.com/wooorm/rehype
-
-[lowlight]: https://github.com/wooorm/lowlight
-
-[highlight-js]: https://github.com/isagalaev/highlight.js
