@@ -11,8 +11,6 @@ node_js:
 - '4.0'
 - '5.0'
 - '6.0'
-after_success:
-- bash <(curl -s https://codecov.io/bash)
 before_install:
   - npm i -g npm@^3.0.0
 before_script:
